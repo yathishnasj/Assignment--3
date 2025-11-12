@@ -1,0 +1,51 @@
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+public class StudentForm extends Application {
+    @Override
+    public void start(Stage stage) {
+        Label nameLabel = new Label("Name:");
+        TextField nameField = new TextField();
+
+        Label genderLabel = new Label("Gender:");
+        RadioButton male = new RadioButton("Male");
+        RadioButton female = new RadioButton("Female");
+        ToggleGroup genderGroup = new ToggleGroup();
+        male.setToggleGroup(genderGroup);
+        female.setToggleGroup(genderGroup);
+
+        Label deptLabel = new Label("Department:");
+        ComboBox<String> deptBox = new ComboBox<>();
+        deptBox.getItems().addAll("IT", "CSE", "ECE", "EEE", "MECH");
+
+        Button submitBtn = new Button("Submit");
+        TextArea outputArea = new TextArea();
+        outputArea.setEditable(false);
+
+        submitBtn.setOnAction(e -> {
+            String name = nameField.getText();
+            RadioButton selectedGender = (RadioButton) genderGroup.getSelectedToggle();
+            String gender = selectedGender != null ? selectedGender.getText() : "Not selected";
+            String dept = deptBox.getValue() != null ? deptBox.getValue() : "Not selected";
+
+            outputArea.setText("Student Information:\nName: " + name +
+                    "\nGender: " + gender + "\nDepartment: " + dept);
+        });
+
+        VBox root = new VBox(10, nameLabel, nameField, genderLabel, male, female, deptLabel, deptBox, submitBtn, outputArea);
+        root.setPadding(new Insets(15));
+
+        Scene scene = new Scene(root, 400, 400);
+        stage.setTitle("Student Form");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
